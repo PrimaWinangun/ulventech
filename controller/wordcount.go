@@ -1,0 +1,43 @@
+package controller
+
+import (
+	"fmt"
+	"github.com/gin-gonic/gin"
+	"net/http"
+	"ulventech/model"
+)
+
+type wcDeliveryHttp struct {
+	wcUsecase model.WordCountUseCase
+}
+
+func NewWordCount(rg *gin.RouterGroup, wcUsecase model.WordCountUseCase) {
+	wd := wcDeliveryHttp{wcUsecase: wcUsecase}
+
+	v1 := rg.Group("/word-count")
+	v1.POST("upload", wd.CountWord)
+}
+
+func (wd wcDeliveryHttp) CountWord(c *gin.Context) {
+	file, err := c.FormFile("file")
+
+	if err != nil {
+		c.String(http.StatusBadRequest, fmt.Sprintf("err: %s", err.Error()))
+		return
+	}
+
+	processedWord, err := wd.wcUsecase.ProcessFile(file, c)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"status": "Failed To Process File",
+			"name":   file.Filename,
+			"error":  err.Error(),
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"status": "File Processed Successfully",
+			"name":   file.Filename,
+			"data":   processedWord,
+		})
+	}
+}
