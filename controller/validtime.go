@@ -2,11 +2,11 @@ package controller
 
 import (
 	"fmt"
+	"github.com/PrimaWinangun/ulventech/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 	"strings"
-	"ulventech/model"
 )
 
 type vtDeliveryHttp struct {
@@ -24,6 +24,15 @@ func NewValidTime(rg *gin.RouterGroup, vtUseCase model.ValidTimeUseCase) {
 	v1.POST("process", vt.FindValidTime)
 }
 
+// FindValidTime godoc
+// @Summary find all combination of valid time from slice of integer
+// @Description return all available time from the combination of four value of slice of integer.
+// @Tags root
+// @Accept application/json
+// @Produce json
+// @Param payload body request true "string value with space between, ex: 1 2 3 4"
+// @Success 200 {object} model.ValidTimeResponse
+// @Router /api/v1/valid-time/process [post]
 func (v vtDeliveryHttp) FindValidTime(c *gin.Context) {
 	in := request{}
 	err := c.ShouldBindJSON(&in)

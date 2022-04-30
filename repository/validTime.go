@@ -2,16 +2,20 @@ package repository
 
 import (
 	"fmt"
-	"ulventech/model"
+	"github.com/PrimaWinangun/ulventech/model"
 )
 
 type vtRepository struct {
 }
 
+// NewVtRepository
+// Initiate the Valid Time Repository Layer
 func NewVtRepository() model.ValidTimeRepository {
 	return &vtRepository{}
 }
 
+// found
+// Function for finding the string in the slice of string, return true if found and false if not found
 func found(needle string, hay []string) bool {
 	for _, v := range hay {
 		if needle == v {
@@ -21,6 +25,9 @@ func found(needle string, hay []string) bool {
 	return false
 }
 
+// Permutation
+// Function for finding all the combination of the slice of integer given to the function and
+// return the combination with format "ab:cd"
 func (v vtRepository) Permutation(t model.ValidTime) (str []string, err error) {
 	var rc func([]int, int)
 	rc = func(x []int, y int) {

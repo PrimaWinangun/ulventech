@@ -2,19 +2,23 @@ package usecase
 
 import (
 	"fmt"
+	"github.com/PrimaWinangun/ulventech/model"
 	"github.com/gin-gonic/gin"
 	"time"
-	"ulventech/model"
 )
 
 type vTUseCase struct {
 	vtRepo model.ValidTimeRepository
 }
 
+// NewVTUseCase
+// Initiate the Valid Time Use Case layer
 func NewVTUseCase(vtRepo model.ValidTimeRepository) model.ValidTimeUseCase {
 	return &vTUseCase{vtRepo: vtRepo}
 }
 
+// ListAvailable
+// Function for check the content of the list if it is valid time
 func (v vTUseCase) ListAvailable(ctx *gin.Context, mt model.ValidTime) (rv model.ValidTimeResponse, err error) {
 	vt, err := v.vtRepo.Permutation(mt)
 	if err != nil {

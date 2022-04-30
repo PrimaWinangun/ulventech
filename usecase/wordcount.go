@@ -2,9 +2,9 @@ package usecase
 
 import (
 	"fmt"
+	"github.com/PrimaWinangun/ulventech/model"
 	"github.com/gin-gonic/gin"
 	"mime/multipart"
-	"ulventech/model"
 )
 
 var basePath string = "upload"
@@ -13,10 +13,14 @@ type wcUsecase struct {
 	wcRepo model.WordCountRepository
 }
 
-func NewWcUsecase(wcRepo model.WordCountRepository) model.WordCountUseCase {
+// NewWcUseCase
+// Initiate the Word Count Use Case Layer
+func NewWcUseCase(wcRepo model.WordCountRepository) model.WordCountUseCase {
 	return wcUsecase{wcRepo: wcRepo}
 }
 
+// ProcessFile
+// Function for upload the file and return top ten words along with the number of used in the file
 func (wc wcUsecase) ProcessFile(file *multipart.FileHeader, ctx *gin.Context) ([]model.WordCount, error) {
 	dest := fmt.Sprintf("%v/%v", basePath, file.Filename)
 	err := ctx.SaveUploadedFile(file, dest)
@@ -29,5 +33,5 @@ func (wc wcUsecase) ProcessFile(file *multipart.FileHeader, ctx *gin.Context) ([
 		return nil, err
 	}
 
-	return word, nil
+	return word[:10], nil
 }

@@ -1,0 +1,86 @@
+basePath: /
+definitions:
+  controller.request:
+    properties:
+      input:
+        type: string
+    type: object
+  model.ValidTimeResponse:
+    properties:
+      count:
+        type: integer
+      list:
+        items:
+          type: string
+        type: array
+    type: object
+  model.WordCount:
+    properties:
+      count:
+        type: integer
+      word:
+        type: string
+    type: object
+host: localhost:9000
+info:
+  contact:
+    email: primawinangun@gmail.com
+    name: Putu Prima Winangun
+  description: This is a simple application for ulventech technical test.
+  license:
+    name: MIT
+  termsOfService: http://swagger.io/terms/
+  title: Ulventech Technical Test
+  version: "1.0"
+paths:
+  /api/v1/valid-time/process:
+    post:
+      consumes:
+      - application/json
+      description: return all available time from the combination of four value of
+        slice of integer.
+      parameters:
+      - description: 'string value with space between, ex: 1 2 3 4'
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/controller.request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ValidTimeResponse'
+      summary: find all combination of valid time from slice of integer
+      tags:
+      - root
+  /api/v1/word-count/upload:
+    post:
+      consumes:
+      - '*/*'
+      description: return top ten most used words along with how many times they occur
+        in the text.
+      parameters:
+      - description: file type with words contained
+        in: path
+        name: payload
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.WordCount'
+            type: array
+      summary: upload file via rest api http & return top ten most used words with
+        the number of used
+      tags:
+      - root
+schemes:
+- http
+swagger: "2.0"

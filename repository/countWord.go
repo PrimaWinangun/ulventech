@@ -1,19 +1,24 @@
 package repository
 
 import (
+	"github.com/PrimaWinangun/ulventech/model"
 	"os"
 	"regexp"
 	"sort"
-	"ulventech/model"
 )
 
 type wcRepository struct {
 }
 
+// NewWcRepository
+// Initiate the Word Count Repository Layer
 func NewWcRepository() model.WordCountRepository {
 	return wcRepository{}
 }
 
+// CountWord
+// Function for counting all the word inside the files and return top ten words along with number
+// used in file in the descending order
 func (w wcRepository) CountWord(filename string) ([]model.WordCount, error) {
 	reg := regexp.MustCompile("[a-zA-Z']+")
 	file, err := os.ReadFile(filename)
